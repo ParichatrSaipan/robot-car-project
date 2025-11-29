@@ -1,46 +1,46 @@
 # Robot Control API
 
-โปรเจกต์นี้เป็น API ที่ใช้ Flask เพื่อควบคุมรถหุ่นยนต์ โดย Raspberry Pi จะรับข้อมูลจาก ESP8266 ผ่านการสื่อสารแบบ Serial
+This project is a Flask-based API for controlling a robot car. The Raspberry Pi receives data from ESP8266 via Serial communication.
 
-## ข้อกำหนดเบื้องต้น
+## Prerequisites
 
-1. **Python**: ตรวจสอบให้แน่ใจว่าคุณได้ติดตั้ง Python ในระบบของคุณแล้ว
-2. **Flask**: ติดตั้ง Flask และ dependencies อื่นๆ โดยใช้คำสั่ง `pip install -r requirements.txt` หลังจากที่โคลนรีโพซิทอรีเรียบร้อยแล้ว
+1. **Python**: Make sure you have Python installed on your system
+2. **Flask**: Install Flask and other dependencies using `pip install -r requirements.txt` after cloning the repository
 
-## การติดตั้ง
+## Installation
 
-1. **โคลนรีโพซิทอรี**:
+1. **Clone the repository**:
     ```bash
     git clone https://github.com/saipanm/robot-car-project.git
     cd back-end
     ```
 
-2. **ติดตั้ง dependencies**:
+2. **Install dependencies**:
     ```bash
     pip install -r requirements.txt
     ```
 
-## การตั้งค่า
+## Configuration
 
-1. **ตั้งค่าการเชื่อมต่อ Serial**:
-    - ตรวจสอบให้แน่ใจว่า ESP8266 ถูกเชื่อมต่อกับพอร์ต Serial ที่ถูกต้องของ Raspberry Pi
-    - ปรับพอร์ต Serial ในโค้ดหากจำเป็น:
+1. **Set up Serial connection**:
+    - Make sure ESP8266 is connected to the correct Serial port of Raspberry Pi
+    - Adjust the Serial port in the code if necessary:
       ```python
-      ser = serial.Serial('/dev/serial0', 9600, timeout=1)  # แทนที่ '/dev/serial0' ด้วยพอร์ตที่ถูกต้อง
+      ser = serial.Serial('/dev/serial0', 9600, timeout=1)  # Replace '/dev/serial0' with the correct port
       ```
 
-## การรัน API
+## Running the API
 
-1. **สร้างbashfileเริ่มรัน Flask API**:
+1. **Create a bash file to start Flask API**:
 
-    สร้าง file name `start.sh` และเขียนโค้ดดังนี้:
+    Create a file named `start.sh` and write the following code:
 
     ```bash
-        export FLASK_APP=robot_control_api.py  
+        export FLASK_APP=robot_control_api.py
         export FLASK_ENV=production
-        gunicorn -w 4 -b 0.0.0.0:1212 robot_control_api:app  
+        gunicorn -w 4 -b 0.0.0.0:1212 robot_control_api:app
     ```
-2. **รัน API อัตโนมัติใช้ pm2 โดยรันจาก bash file**:
+2. **Run API automatically using pm2 from bash file**:
     ```bash
     pm2 start start_api.sh
     ```
@@ -48,18 +48,18 @@
 
 ## API Endpoints
 
-### 1. เคลื่อนที่หุ่นยนต์
+### 1. Move Robot
 
 - **Endpoint**: `/api/move`
 - **Method**: `POST`
-- **คำอธิบาย**: เคลื่อนที่หุ่นยนต์ในทิศทางที่กำหนด
-- **ตัวอย่างคำขอ**:
+- **Description**: Move the robot in a specified direction
+- **Request Example**:
     ```json
     {
         "direction": "forward", "reverse", "left", "right", "stop"
     }
     ```
-- **การตอบสนอง**:
+- **Response**:
     ```json
     {
         "status": "moving <direction>",
@@ -67,12 +67,12 @@
     }
     ```
 
-### 2. ตรวจสอบสถานะของ API และการเชื่อมต่อ Serial
+### 2. Check API Status and Serial Connection
 
 - **Endpoint**: `/api/status`
 - **Method**: `GET`
-- **คำอธิบาย**: ตรวจสอบสถานะของ API และการเชื่อมต่อ Serial
-- **การตอบสนอง**:
+- **Description**: Check the status of the API and Serial connection
+- **Response**:
     ```json
     {
         "status": "API is running",
@@ -80,11 +80,11 @@
     }
     ```
 
-## คำอธิบายโค้ด
+## Code Explanation
 
-### การสื่อสารแบบ Serial
+### Serial Communication
 
-ฟังก์ชัน **`send_command`** ส่งคำสั่งไปยัง ESP8266 และรอรับการตอบสนอง
+The **`send_command`** function sends commands to ESP8266 and waits for a response
 
  ```python
     def send_command(command):
@@ -106,12 +106,12 @@
 
 ### API Resources
 
-- **MoveResource**: จัดการคำขอ POST เพื่อควบคุมการเคลื่อนที่ของหุ่นยนต์
-  
+- **MoveResource**: Handles POST requests to control robot movement
+
   ```python
         class MoveResource(Resource):
             def post(self):
-                
+
                 data = request.json
                 direction = data.get("direction")
 
@@ -127,7 +127,7 @@
 
     ```
 
-- **StatusResource**: จัดการคำขอ GET เพื่อเช็คสถานะของ API และการเชื่อมต่อ Serial
+- **StatusResource**: Handles GET requests to check API status and Serial connection
     ```python
     class StatusResource(Resource):
         def get(self):

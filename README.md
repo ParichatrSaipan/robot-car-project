@@ -1,54 +1,54 @@
 # robot-car-project
 
-โปรเจกต์นี้เป็นระบบควบคุมรถหุ่นยนต์ผ่านการใช้งาน RESTful API ด้วย Flask โดย Raspberry Pi จะทำหน้าที่รับข้อมูลจาก ESP8266 ผ่านการสื่อสารแบบ Serial และยังมี Webapp สำหรับควบคุมการเคลื่อนที่ของหุ่นยนต์ ซึ่งพัฒนาโดยใช้ React สำหรับ Frontend และ Flask สำหรับ Backend
+This project is a robot car control system using RESTful API with Flask. The Raspberry Pi receives data from the ESP8266 via Serial communication and includes a Web Application for controlling the robot's movement, developed using React for the Frontend and Flask for the Backend.
 
 ## System Diagram
 ![image](/readme-picture/system-diagram.png)
 
-## หลักการทำงานของระบบ
+## System Overview
 
-- **ผู้ใช้งาน (User)**:
-    - ผู้ใช้งานสามารถส่งคำสั่งผ่าน Web Application ที่เข้าถึงได้ผ่านเครือข่าย Local Network ซึ่งเชื่อมต่อกับ Raspberry Pi ที่ทำหน้าที่เป็นตัวควบคุมหุ่นยนต์
-    - สามารถควบคุมทิศทางการเคลื่อนที่ของหุ่นยนต์แบบเรียลไทม์ผ่าน UI ที่ออกแบบด้วย React
+- **User**:
+    - Users can send commands through the Web Application accessible via Local Network, which connects to the Raspberry Pi that acts as the robot controller
+    - Can control the robot's movement direction in real-time through the React-designed UI
 
-- **แอปพลิเคชันเว็บ (Web Application)**:
-    - **React**: ใช้พัฒนา Frontend ของ Web Application เพื่อสร้าง UI ที่ใช้งานง่าย พร้อมแสดงข้อมูลเรียลไทม์จาก WebSocket
-    - **Node.js**: ใช้เป็น Backend เซิร์ฟเวอร์ของแอปพลิเคชัน ซึ่งจัดการคำสั่งของผู้ใช้และสื่อสารกับ Raspberry Pi ผ่าน REST API
-    - **WebSocket (WSS)**: สำหรับสตรีมวิดีโอแบบเรียลไทม์จากกล้องบนหุ่นยนต์ไปยังแอปพลิเคชันเว็บ ทำให้ผู้ใช้งานสามารถติดตามภาพสดได้ขณะควบคุมหุ่นยนต์
+- **Web Application**:
+    - **React**: Used to develop the Frontend of the Web Application to create an easy-to-use UI with real-time data display from WebSocket
+    - **Node.js**: Used as the Backend server of the application, managing user commands and communicating with Raspberry Pi through REST API
+    - **WebSocket (WSS)**: For real-time video streaming from the camera on the robot to the web application, allowing users to monitor live video while controlling the robot
 
 - **Raspberry Pi (Upper Level)**:
-    - **Flask REST API**: Raspberry Pi ทำหน้าที่เป็นตัวควบคุมหลัก โดยใช้ Flask สร้าง REST API สำหรับรับคำสั่งจาก Web Application แล้วส่งต่อไปยัง ESP8266 ผ่าน Serial Communication
-    - **WebSocket**: Raspberry Pi ยังทำหน้าที่ส่งสัญญาณภาพวิดีโอแบบเรียลไทม์จาก WebCam กลับไปยัง Web Application เพื่อให้ผู้ใช้งานสามารถติดตามสถานะของหุ่นยนต์ได้
+    - **Flask REST API**: Raspberry Pi acts as the main controller, using Flask to create a REST API for receiving commands from the Web Application and forwarding them to ESP8266 via Serial Communication
+    - **WebSocket**: Raspberry Pi also sends real-time video signals from the WebCam back to the Web Application so users can monitor the robot's status
 
 - **ESP8266 (Lower Level)**:
-    - ESP8266 รับคำสั่งควบคุมจาก Raspberry Pi ผ่าน Serial และแปลงคำสั่งเป็นสัญญาณควบคุมเพื่อส่งไปยังมอเตอร์ไดรเวอร์ L298N เพื่อควบคุมมอเตอร์
+    - ESP8266 receives control commands from Raspberry Pi via Serial and converts commands into control signals to send to the L298N motor driver to control the motors
 
 - **Motor Driver (L298N)**:
-    - L298N Motor Driver ทำหน้าที่ควบคุมมอเตอร์ซ้ายและขวา โดยใช้สัญญาณควบคุมจาก ESP8266 เพื่อเปลี่ยนทิศทางของมอเตอร์ เช่น เดินหน้า ถอยหลัง หรือหยุด
+    - L298N Motor Driver controls the left and right motors using control signals from ESP8266 to change motor direction, such as moving forward, reversing, or stopping
 
-- **มอเตอร์ (Motors)**:
-    - มอเตอร์ซ้ายและขวาจะเคลื่อนที่ตามสัญญาณจากมอเตอร์ไดรเวอร์ เพื่อให้หุ่นยนต์สามารถเปลี่ยนทิศทางและเคลื่อนที่ตามคำสั่งที่กำหนด
+- **Motors**:
+    - The left and right motors move according to signals from the motor driver, allowing the robot to change direction and move according to specified commands
 
 - **WebCam**:
-    - WebCam เชื่อมต่อกับ Raspberry Pi เพื่อบันทึกและถ่ายทอดภาพสดไปยัง Web Application ผ่าน WebSocket ทำให้ผู้ใช้งานสามารถติดตามสถานะของหุ่นยนต์ได้แบบเรียลไทม์
+    - WebCam connects to Raspberry Pi to record and stream live video to the Web Application through WebSocket, allowing users to monitor the robot's status in real-time
 
-## สรุปการทำงานของระบบ
+## System Summary
 
-ระบบนี้ทำงานผ่านการเชื่อมต่อใน Local Network โดยคำสั่งควบคุมจาก Web Application ที่พัฒนาด้วย React และ Node.js จะถูกส่งผ่าน REST API ไปยัง Raspberry Pi ซึ่งจะทำหน้าที่ส่งคำสั่งต่อไปยัง ESP8266 ผ่าน Serial Communication โดยใช้ขา RX และ TX เพื่อให้ ESP8266 ส่งสัญญาณควบคุมไปยังมอเตอร์ไดรเวอร์และมอเตอร์ ขณะเดียวกัน ภาพสดจาก WebCam จะถูกสตรีมกลับมายัง Web Application ผ่าน WebSocket เพื่อให้ผู้ใช้งานสามารถเห็นภาพการทำงานของหุ่นยนต์ได้แบบเรียลไทม์
+This system operates through a Local Network connection. Control commands from the Web Application developed with React and Node.js are sent via REST API to the Raspberry Pi, which forwards commands to the ESP8266 via Serial Communication using RX and TX pins. The ESP8266 then sends control signals to the motor driver and motors. Meanwhile, live video from the WebCam is streamed back to the Web Application through WebSocket, allowing users to see the robot's operation in real-time.
 
 ---
 
-### Step การตั้งค่าระบบบน Raspberry Pi 4
+### Setting Up the System on Raspberry Pi 4
 
-สามารถดูขั้นตอนการตั้งค่าเพิ่มเติมสำหรับโปรเจกต์นี้ได้ที่ [README.md ของ Backend](/back-end/README.md)
+For additional setup steps for this project, see [Backend README.md](/back-end/README.md)
 
-### Step การใช้งานโค้ด ESP บน ESP8266
+### Using ESP Code on ESP8266
 
-สามารถดูรายละเอียดการใช้งานและการพัฒนาโค้ดสำหรับ ESP ได้ที่ [README.md ของ ESP Code](/esp-code/README.md)
+For usage details and code development for ESP, see [ESP Code README.md](/esp-code/README.md)
 
-### Step การตั้งค่า Web Application บน Raspberry Pi 4
+### Setting Up Web Application on Raspberry Pi 4
 
-สามารถดูขั้นตอนการตั้งค่าและการใช้งานสำหรับ Web Application ได้ที่ [README.md ของ Web Application](/robot-webapp/README.md)
+For setup steps and usage for the Web Application, see [Web Application README.md](/robot-webapp/README.md)
 
 ---
 

@@ -1,62 +1,62 @@
 # robot-car-project
 
-## คำแนะนำการเริ่มต้นใช้งานสำหรับการพัฒนาโปรเจค webapp ของ robot-car-project ใน raspberry pi4
+## Getting Started Guide for Developing the robot-car-project webapp on Raspberry Pi 4
 
-1. **เปิด Terminal**: เริ่มต้นใช้งานโดยเปิดโปรแกรม Terminal เพื่อใช้คำสั่งต่างๆ
+1. **Open Terminal**: Start by opening the Terminal program to use various commands
 
-2. **ใช้คำสั่งพื้นฐาน**:
+2. **Use Basic Commands**:
 
-   - **`ls`**: ใช้เพื่อแสดงรายการไฟล์และโฟลเดอร์ทั้งหมดในตำแหน่งปัจจุบัน
+   - **`ls`**: Use to display all files and folders in the current location
      ```bash
      ls
      ```
-     
-   - **`cd <ชื่อไดเรกทอรี>`**: ใช้เพื่อเปลี่ยนไปยังไดเรกทอรีอื่น ตัวอย่างเช่น การเปลี่ยนไปยังโฟลเดอร์ `robot-car-project`
+
+   - **`cd <directory-name>`**: Use to change to another directory, for example, changing to the `robot-car-project` folder
      ```bash
      cd robot-car-project
      ```
 
-   - **`cd ..`**: ใช้เพื่อย้อนกลับไปยังไดเรกทอรีก่อนหน้า
+   - **`cd ..`**: Use to go back to the previous directory
      ```bash
      cd ..
      ```
 
-   - **`pwd`**: ใช้เพื่อแสดงตำแหน่งปัจจุบัน (path) ว่าอยู่ที่ไหนในโครงสร้างไดเรกทอรีของระบบ
+   - **`pwd`**: Use to display the current location (path) in the system's directory structure
      ```bash
      pwd
      ```
-     ตัวอย่างผลลัพธ์เมื่อใช้คำสั่ง `pwd` และกด Enter:
+     Example output when using `pwd` command and pressing Enter:
      ```bash
      /var/www/html/robot-car-project/robot-webapp
      ```
 
-   ## การ ssh ผ่าน vscode
+   ## SSH via VSCode
 
-    1. กดตามรูปด้านล่าง
+    1. Click as shown in the image below
 
     ![image](../readme-picture/Screenshot%202567-11-02%20at%2020.20.55.png)
 
-    2. กด Remote-SSH: Connect to Host... ตามรูปด้านล่าง
+    2. Click Remote-SSH: Connect to Host... as shown in the image below
 
     ![image](../readme-picture/Screenshot%202567-11-02%20at%2020.21.53.png)
 
-    3. พิม password และกด Enter
+    3. Type password and press Enter
     ```bash
      earnpan
      ```
-    4. กด Open Folder ตามรูปด้านล่าง
+    4. Click Open Folder as shown in the image below
 
     ![image](../readme-picture/Screenshot%202567-11-02%20at%2020.23.20.png)
 
-    5. กด Choose Folder ด้วย path ดังนี้
+    5. Click Choose Folder with the following path
     ```bash
      /var/www/html/robot-car-project/robot-webapp
      ```
-    6. แก้ไขไฟล์ได้ตามปกติ
+    6. Edit files normally
 
-    7. Save ไฟล์ โดยกด `ctrl + shift + p` บน VSCode แล้วพิมพ์ `save as root` แล้วกด Enter
+    7. Save file by pressing `ctrl + shift + p` in VSCode, then type `save as root` and press Enter
 
-    8. `cd` ไปที่โฟลเดอร์ `robot-webapp` แล้วพิมพ์คำสั่งด้านล่าง
+    8. `cd` to the `robot-webapp` folder and type the command below
         ```bash
         npm run build
         ```

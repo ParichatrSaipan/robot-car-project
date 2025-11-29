@@ -1,52 +1,52 @@
-# การควบคุมรถหุ่นยนต์ด้วย ESP8266
+# Robot Car Control with ESP8266
 
-โปรเจกต์นี้ใช้ไมโครคอนโทรลเลอร์ ESP8266 ในการควบคุมรถหุ่นยนต์ให้เคลื่อนไหวตามคำสั่งเบื้องต้น โดยรถหุ่นยนต์จะตอบสนองต่อคำสั่งทาง Serial เพื่อเดินหน้า ถอยหลัง เลี้ยวซ้าย เลี้ยวขวา และหยุด โดยใช้ PWM สำหรับควบคุมความเร็วและ GPIO สำหรับควบคุมทิศทาง
+This project uses an ESP8266 microcontroller to control a robot car to move according to basic commands. The robot responds to Serial commands to move forward, reverse, turn left, turn right, and stop, using PWM for speed control and GPIO for direction control.
 
-## ส่วนประกอบ
+## Components
 
-- **ESP8266**: ไมโครคอนโทรลเลอร์เพื่อรับคำสั่งและควบคุมมอเตอร์
-- **ไดร์ฟมอเตอร์**: ควบคุมทิศทางและความเร็วของล้อหุ่นยนต์
-- **มอเตอร์ DC**: ขับเคลื่อนล้อของหุ่นยนต์
-- **การสื่อสารแบบ Serial**: รับคำสั่งการเคลื่อนไหวจากแหล่งภายนอก
+- **ESP8266**: Microcontroller for receiving commands and controlling motors
+- **Motor Driver**: Controls the direction and speed of the robot wheels
+- **DC Motors**: Drive the robot wheels
+- **Serial Communication**: Receives movement commands from external sources
 
-## การกำหนดขา (Pin Configuration)
+## Pin Configuration
 
-- **ขาควบคุมทิศทางมอเตอร์**:
-    - `LEFTF1` (D6): มอเตอร์ซ้ายเดินหน้า
-    - `LEFTF2` (D7): มอเตอร์ซ้ายถอยหลัง
-    - `RIGHTF1` (D8): มอเตอร์ขวาเดินหน้า
-    - `RIGHTF2` (D0): มอเตอร์ขวาถอยหลัง
+- **Motor Direction Control Pins**:
+    - `LEFTF1` (D6): Left motor forward
+    - `LEFTF2` (D7): Left motor reverse
+    - `RIGHTF1` (D8): Right motor forward
+    - `RIGHTF2` (D0): Right motor reverse
 
-- **ขาควบคุมความเร็ว PWM**:
-    - `SPEED_A` (D3): ควบคุมความเร็วมอเตอร์ซ้าย
-    - `SPEED_B` (D4): ควบคุมความเร็วมอเตอร์ขวา
+- **PWM Speed Control Pins**:
+    - `SPEED_A` (D3): Left motor speed control
+    - `SPEED_B` (D4): Right motor speed control
 
-## คุณสมบัติ
+## Features
 
-1. **การควบคุมทิศทาง**: รับคำสั่งเพื่อเดินหน้า ถอยหลัง เลี้ยวซ้าย เลี้ยวขวา และหยุด
-2. **การควบคุมความเร็ว PWM**: ตั้งค่าความเร็วที่ 50% ของ duty cycle
-3. **การจัดการ Timeout**: การเคลื่อนไหวแต่ละครั้งจะอยู่ในช่วงเวลา 500 มิลลิวินาที เพื่อป้องกันการเคลื่อนไหวต่อเนื่องโดยไม่ได้รับคำสั่งใหม่
-4. **การแยกคำสั่ง**: รับคำสั่งผ่านทาง Serial และประมวลผลเพื่อควบคุมการเคลื่อนไหว
+1. **Direction Control**: Receives commands to move forward, reverse, turn left, turn right, and stop
+2. **PWM Speed Control**: Speed set at 50% duty cycle
+3. **Timeout Management**: Each movement lasts for 500 milliseconds to prevent continuous movement without new commands
+4. **Command Parsing**: Receives commands via Serial and processes them to control movement
 
-## การติดตั้ง
+## Installation
 
-1. เชื่อมต่อ ESP8266 กับไดร์ฟมอเตอร์และมอเตอร์ตามการกำหนดขาด้านบน
-2. อัปโหลดโค้ดไปยัง ESP8266
-3. ใช้ Serial Interface (เช่น Arduino Serial Monitor) เพื่อส่งคำสั่ง
+1. Connect ESP8266 to the motor driver and motors according to the pin configuration above
+2. Upload the code to ESP8266
+3. Use a Serial Interface (e.g., Arduino Serial Monitor) to send commands
 
-## คำสั่ง
+## Commands
 
-คำสั่งจะถูกส่งผ่าน Serial และประมวลผลดังนี้:
+Commands are sent via Serial and processed as follows:
 
-- `forward`: เดินหน้ารถหุ่นยนต์เป็นเวลา 500 มิลลิวินาที
-- `reverse`: ถอยหลังรถหุ่นยนต์เป็นเวลา 500 มิลลิวินาที
-- `left`: เลี้ยวซ้ายรถหุ่นยนต์เป็นเวลา 500 มิลลิวินาที
-- `right`: เลี้ยวขวารถหุ่นยนต์เป็นเวลา 500 มิลลิวินาที
-- `stop`: หยุดรถหุ่นยนต์ทันที
+- `forward`: Move robot forward for 500 milliseconds
+- `reverse`: Move robot backward for 500 milliseconds
+- `left`: Turn robot left for 500 milliseconds
+- `right`: Turn robot right for 500 milliseconds
+- `stop`: Stop robot immediately
 
-## ตัวอย่างการแสดงผลทาง Serial
+## Serial Output Example
 
-เมื่อรถหุ่นยนต์ได้รับคำสั่งผ่าน Serial จะมีการแสดงผลตอบกลับใน Serial Monitor ดังนี้:
+When the robot receives commands via Serial, it will display feedback in the Serial Monitor as follows:
 
     ```
     Moving Forward
@@ -60,19 +60,19 @@
     Stopping
     ```
 
-## คำอธิบายโค้ด
+## Code Explanation
 
-### ฟังก์ชันการเคลื่อนไหว
+### Movement Functions
 
-- **`startForward()`**: ตั้งค่าขาเพื่อให้รถหุ่นยนต์เดินหน้าและเริ่มจับเวลา
-- **`reverse()`**: ตั้งค่าขาเพื่อให้รถหุ่นยนต์ถอยหลังและเริ่มจับเวลา
-- **`moveLeft()`**: ตั้งค่าขาเพื่อให้รถหุ่นยนต์เลี้ยวซ้ายและเริ่มจับเวลา
-- **`moveRight()`**: ตั้งค่าขาเพื่อให้รถหุ่นยนต์เลี้ยวขวาและเริ่มจับเวลา
-- **`stop()`**: หยุดการเคลื่อนไหวทั้งหมดโดยตั้งค่าขาของมอเตอร์เป็น LOW
+- **`startForward()`**: Sets pins to move robot forward and starts timer
+- **`reverse()`**: Sets pins to move robot backward and starts timer
+- **`moveLeft()`**: Sets pins to turn robot left and starts timer
+- **`moveRight()`**: Sets pins to turn robot right and starts timer
+- **`stop()`**: Stops all movement by setting motor pins to LOW
 
-### ตัวอย่างโค้ด
+### Code Example
 
-ฟังก์ชันการเคลื่อนไหวแต่ละฟังก์ชันใช้ `digitalWrite` ในการควบคุมทิศทางของมอเตอร์และใช้ flag เพื่อติดตามสถานะของหุ่นยนต์:
+Each movement function uses `digitalWrite` to control motor direction and uses flags to track robot status:
 
 ```cpp
 void startForward() {
